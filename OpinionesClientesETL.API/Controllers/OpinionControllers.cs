@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpinionesClientesETL.DATA.Entities.db;
-using OpinionesClientesETL.DATA.Interfaces; // Asegúrate de tener esta referencia
+using OpinionesClientesETL.DATA.Interfaces; 
 
 namespace OpinionesClientesETL.API.Controllers
 {
@@ -10,7 +10,6 @@ namespace OpinionesClientesETL.API.Controllers
     {
         private readonly IExtractor<Opinions> _extractor;
 
-        // Se recomienda usar IExtractor para ser coherente con tu arquitectura ETL
         public OpinionsController(IExtractor<Opinions> extractor)
         {
             _extractor = extractor;
@@ -19,7 +18,7 @@ namespace OpinionesClientesETL.API.Controllers
         [HttpGet("extraer-csv")]
         public async Task<IActionResult> GetOpinionsFromCsv()
         {
-            // Nota: Asegúrate de que la ruta del archivo sea accesible por la API
+ 
             var opiniones = await _extractor.ExtractAsync();
             return Ok(opiniones);
         }
