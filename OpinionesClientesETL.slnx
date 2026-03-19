@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/API/">
+    <Project Path="OpinionesClientesETL.API/OpinionesClientesETL.API.csproj" />
+  </Folder>
+  <Folder Name="/DATA/">
+    <Project Path="OpinionesClientesETL.DATA/OpinionesClientesETL.DATA.csproj" />
+  </Folder>
+  <Folder Name="/PROCESS/">
+    <Project Path="OpinionesClientesETL.WK/OpinionesClientesETL.WK.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-OpinionesClientesETL.WK-32b157d1-a3ce-460d-9d0c-e7d4c6166c6c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpinionesClientesETL.API\OpinionesClientesETL.API.csproj" />
+    <ProjectReference Include="..\OpinionesClientesETL.DATA\OpinionesClientesETL.DATA.csproj" />
+  </ItemGroup>
+</Project>
