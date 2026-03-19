@@ -10,7 +10,6 @@
     <Folder Include="Entities\Dwh\Dimensions\" />
     <Folder Include="Entities\Dwh\Facts\" />
     <Folder Include="Persisitence\Repositories\Api\" />
-    <Folder Include="Persisitence\Repositories\Csv\" />
     <Folder Include="Persisitence\Repositories\Dwh\" />
     <Folder Include="Persisitence\Repositories\Db\" />
   </ItemGroup>

@@ -1,25 +1,28 @@
+using Microsoft.Extensions.DependencyInjection;
+using OpinionesClientesETL.DATA;
+using OpinionesClientesETL.DATA.Entities.db;
+using OpinionesClientesETL.DATA.Interfaces;
+using OpinionesClientesETL.DATA.Persisitence.Repositories.Csv;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
+builder.Services.AddScoped<IExtractor<Opinions>>(provider =>
+    new CsvExtractor(@"D:\Sources\surveys_part1.csv")); 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
