@@ -38,8 +38,8 @@ namespace OpinionesClientesETL.DATA
                     Comentario = item.body,
                     Fecha = DateTime.Now,
                     Fuente = "API",
-                    Clasificacion = "Externa",
-                    PuntajeSatisfaccion = null,
+                    Clasificación = "Externa",
+                    PuntajeSatisfacción = null,
                     IdCliente = null,
                     IdProducto = null
                 });

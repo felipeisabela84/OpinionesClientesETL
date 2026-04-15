@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OpinionesClientesETL.DATA
 {
-    public class CsvExtractor : IExtractor<Opinions>
+    public class CsvExtractor<T> : IExtractor<T>
     {
         private readonly string _filePath;
 
@@ -21,32 +21,29 @@ namespace OpinionesClientesETL.DATA
             _filePath = filePath;
         }
 
-        public async Task<IEnumerable<Opinions>> ExtractAsync()
+        public async Task<IEnumerable<T>> ExtractAsync()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = true,
-           
                 PrepareHeaderForMatch = args => args.Header.ToLower().Trim(),
-     
                 MissingFieldFound = null,
                 HeaderValidated = null
             };
 
-            using (var reader = new StreamReader(_filePath))
-            using (var csv = new CsvReader(reader, config))
+            using var reader = new StreamReader(_filePath);
+            using var csv = new CsvReader(reader, config);
+
+            var lista = new List<T>();
+
+            var records = csv.GetRecordsAsync<T>();
+
+            await foreach (var record in records)
             {
-
-                var lista = new List<Opinions>();
-                var records = csv.GetRecordsAsync<Opinions>();
-
-                await foreach (var record in records)
-                {
-                    lista.Add(record);
-                }
-
-                return lista;
+                lista.Add(record);
             }
+
+            return lista;
         }
     }
 }

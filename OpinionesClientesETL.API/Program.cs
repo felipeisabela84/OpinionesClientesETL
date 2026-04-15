@@ -9,9 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-
 builder.Services.AddScoped<IExtractor<Opinions>>(provider =>
-    new CsvExtractor(@"D:\Sources\surveys_part1.csv")); 
+    new CsvExtractor<Opinions>(@"D:\Sources\surveys_part1.csv"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

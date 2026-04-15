@@ -51,8 +51,8 @@ namespace OpinionesClientesETL.DATA
                             IdProducto = reader.IsDBNull(2) ? null : reader.GetInt32(2),
                             Fecha = reader.IsDBNull(3) ? null : reader.GetDateTime(3),
                             Comentario = reader.IsDBNull(4) ? null : reader.GetString(4),
-                            Clasificacion = reader.IsDBNull(5) ? null : reader.GetString(5),
-                            PuntajeSatisfaccion = reader.IsDBNull(6) ? null : reader.GetInt32(6),
+                            Clasificación = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            PuntajeSatisfacción = reader.IsDBNull(6) ? null : reader.GetInt32(6),
                             Fuente = reader.IsDBNull(7) ? null : reader.GetString(7)
                         });
                     }

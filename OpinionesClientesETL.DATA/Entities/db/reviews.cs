@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace OpinionesClientesETL.DATA.Entities.db
 {
-    public class Opinions
-    {
-        public int? IdOpinion { get; set; }
+    public class reviews
+    {   public int? IdReview { get; set; }
         public int? IdCliente { get; set; }
         public int? IdProducto { get; set; }
         public DateTime? Fecha { get; set; }
         public string? Comentario { get; set; }
-        public string? Clasificación { get; set; }
-        public int? PuntajeSatisfacción { get; set; }
-        public string? Fuente { get; set; }
+        public string? Rating { get; set; }
+
     }
+   
 }
