@@ -140,7 +140,7 @@ namespace OpinionesClientesETL.DATA.Persisitence.Repositories.Dwh
                                IDFUENTE = f.IDFUENTE,
                                IDFECHA = fe.IDFECHA,
                                IDRATING = r != null ? r.IDRATING : (int?)null,
-                               IDCLASIFICACION = cl != null ? cl.IDCLASIFICACION : (int?)null,
+                               IDCLASIFICACION = cl?.IDCLASIFICACION ?? 1,
                                TOTAL_COMENTARIOS = 1
                            };
 
