@@ -38,6 +38,10 @@ namespace OpinionesClientesETL.WK
                     SocialFile = @"D:\Sources\social_comments.csv"
                 };
 
+                _logger.LogInformation("Limpiando facts...");
+                await factRepository.ClearFactsAsync();
+                _logger.LogInformation("Facts limpiados ");
+
                 _logger.LogInformation("Cargando dimensiones...");
                 var result = await dwhRepository.LoadDimsDataAsync(dimDtos);
                 if (!result.IsSuccess)
@@ -46,10 +50,6 @@ namespace OpinionesClientesETL.WK
                     return;
                 }
                 _logger.LogInformation("Dimensiones cargadas");
-
-                _logger.LogInformation("Limpiando facts...");
-                await factRepository.ClearFactsAsync();
-                _logger.LogInformation("Facts limpiados ");
 
                 _logger.LogInformation("Insertando facts...");
                 await factRepository.LoadFactOpinionesAsync(dimDtos);
