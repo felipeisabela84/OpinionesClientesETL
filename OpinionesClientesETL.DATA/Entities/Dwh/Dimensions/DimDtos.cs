@@ -14,6 +14,8 @@ namespace OpinionesClientesETL.DATA.Entities.Dwh.Dimensions
             public string WebReviewsFile { get; set; } = string.Empty; 
             public string CategoriasFile { get; set; }
             public string FechasFile { get; set; }
-        
+            public string EncuestasFile { get; set; }
+            public string SocialFile { get; set; }
+
     }
 }

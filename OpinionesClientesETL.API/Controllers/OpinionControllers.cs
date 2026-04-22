@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpinionesClientesETL.DATA.Entities.db;
-using OpinionesClientesETL.DATA.Interfaces; 
+using OpinionesClientesETL.DATA.Interfaces;
+using OpinionesClientesETL.DATA.Services;
 
 namespace OpinionesClientesETL.API.Controllers
 {
@@ -8,19 +9,18 @@ namespace OpinionesClientesETL.API.Controllers
     [Route("api/[controller]")]
     public class OpinionsController : ControllerBase
     {
-        private readonly IExtractor<Opinions> _extractor;
+        private readonly OpinionsService _service;
 
-        public OpinionsController(IExtractor<Opinions> extractor)
+        public OpinionsController(OpinionsService service)
         {
-            _extractor = extractor;
+            _service = service;
         }
 
-        [HttpGet("extraer-csv")]
-        public async Task<IActionResult> GetOpinionsFromCsv()
+        [HttpGet]
+        public async Task<ActionResult<List<Opinions>>> Get()
         {
- 
-            var opiniones = await _extractor.ExtractAsync();
-            return Ok(opiniones);
+            var data = await _service.GetAllAsync();
+            return Ok(data);
         }
     }
 }

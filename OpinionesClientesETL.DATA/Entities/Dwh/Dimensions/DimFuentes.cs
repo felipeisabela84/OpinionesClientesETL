@@ -10,7 +10,7 @@ namespace OpinionesClientesETL.DATA.Entities.Dwh.Dimensions
     public class DimFuentes
     {
         [Ignore]
-        public int? IDFUENTE { get; set; }
+        public int IDFUENTE { get; set; }
 
         [Name("TipoFuente")]
         public string? TIPOFUENTE { get; set; }

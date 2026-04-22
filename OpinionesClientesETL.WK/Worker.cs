@@ -1,6 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using OpinionesClientesETL.DATA;
-using OpinionesClientesETL.DATA.Entities.db;
 using OpinionesClientesETL.DATA.Entities.Dwh.Dimensions;
 using OpinionesClientesETL.DATA.Interfaces;
 using OpinionesClientesETL.DATA.Persisitence.Repositories.Dwh;
@@ -10,56 +7,61 @@ namespace OpinionesClientesETL.WK
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IServiceScopeFactory _scopeFactory;  
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public Worker(ILogger<Worker> logger, IServiceScopeFactory scopeFactory)
+        public Worker(
+            ILogger<Worker> logger,
+            IServiceScopeFactory scopeFactory)
         {
             _logger = logger;
-            _scopeFactory = scopeFactory;             
+            _scopeFactory = scopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Iniciando proceso ETL...");
-
-            var extractores = new List<IExtractor<Opinions>>
+            try
             {
-                new CsvExtractor<Opinions>(@"D:\Sources\surveys_part1.csv"),
-                new DatabaseExtractor("Data Source=DESKTOP-1KKHQPG;Initial Catalog=PROYECTO_ETL;Integrated Security=True;TrustServerCertificate=True;"),
-                new ApiExtractor(new HttpClient())
-            };
+                _logger.LogInformation("Iniciando proceso ETL...");
 
-            var staging = new List<Opinions>();
-
-            foreach (var extractor in extractores)
-            {
-                var data = await extractor.ExtractAsync();
-                staging.AddRange(data);
-                _logger.LogInformation("Registros extraídos: {count}", data.Count());
-            }
-
-            _logger.LogInformation("STAGING TOTAL: {total}", staging.Count);
-
-         
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                var dwhRepository = scope.ServiceProvider
-                    .GetRequiredService<IDwhRepository>();
+                using var scope = _scopeFactory.CreateScope();
+                var dwhRepository = scope.ServiceProvider.GetRequiredService<IDwhRepository>();
+                var factRepository = scope.ServiceProvider.GetRequiredService<DwhFactRepository>();
 
                 var dimDtos = new DimDtos
                 {
                     ProductosFile = @"D:\Sources\products.csv",
                     ClientesFile = @"D:\Sources\clients.csv",
                     FuentesFile = @"D:\Sources\Fuente_Datos.csv",
-                    WebReviewsFile = @"D:\Sources\web_reviews.csv",
                     FechasFile = @"D:\Sources\surveys_part1.csv",
+                    EncuestasFile = @"D:\Sources\surveys_part1.csv",
+                    WebReviewsFile = @"D:\Sources\web_reviews.csv",
+                    SocialFile = @"D:\Sources\social_comments.csv"
                 };
 
-                await dwhRepository.LoadDimsDataAsync(dimDtos);
-            }
+                _logger.LogInformation("Cargando dimensiones...");
+                var result = await dwhRepository.LoadDimsDataAsync(dimDtos);
+                if (!result.IsSuccess)
+                {
+                    _logger.LogError("Error cargando dimensiones: {msg}", result.Message);
+                    return;
+                }
+                _logger.LogInformation("Dimensiones cargadas");
 
-            _logger.LogInformation("DIMENSIONES CARGADAS");
-            _logger.LogInformation("Proceso ETL finalizado");
+                _logger.LogInformation("Limpiando facts...");
+                await factRepository.ClearFactsAsync();
+                _logger.LogInformation("Facts limpiados ");
+
+                _logger.LogInformation("Insertando facts...");
+                await factRepository.LoadFactOpinionesAsync(dimDtos);
+
+                _logger.LogInformation("Proceso ETL finalizado exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR en el proceso ETL: {message}", ex.Message);
+                await Task.Delay(15000, stoppingToken);
+                throw;
+            }
         }
     }
 }

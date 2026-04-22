@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace OpinionesClientesETL.DATA.Persisitence
 {
     public class DWHInventoryContext : DbContext
@@ -25,10 +26,10 @@ namespace OpinionesClientesETL.DATA.Persisitence
         public DbSet<DimProductos> DimProductos { get; set; }
         public DbSet<DimRating> DimRatings { get; set; }
 
+        public DbSet<FactOpiniones> FactOpiniones { get; set; }
 
-        //public DbSet<FactOpiniones> FactOpiniones { get; set; }
 
-     protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<DimCategoria>()
@@ -40,15 +41,37 @@ namespace OpinionesClientesETL.DATA.Persisitence
                             .HasKey(x => x.IDCLIENTE);
             modelBuilder.Entity<DimFecha>()
                             .HasKey(x => x.IDFECHA);
+            modelBuilder.Entity<DimFecha>()
+             .Property(x => x.FECHA_DT)
+              .HasColumnName("FECHA");
             modelBuilder.Entity<DimFuentes>()
                             .HasKey(x => x.IDFUENTE);
+
             modelBuilder.Entity<DimProductos>()
                             .HasKey(x => x.IDPRODUCTO); 
             modelBuilder.Entity<DimRating>()
                             .HasKey(x => x.IDRATING);
+            modelBuilder.Entity<DimClasificacion>()
+                .Property(x => x.IDCLASIFICACION)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<FactOpiniones>()
+                .HasKey(x => x.IDOPINION);
+
+            modelBuilder.Entity<FactOpiniones>()
+             .Property(x => x.IDOPINION)
+            .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<DimProductos>()
-                .ToTable("PRODUCTOS","DIM");
+            .Property(x => x.IDPRODUCTO)
+            .ValueGeneratedNever();
+
+            modelBuilder.Entity<DimClientes>()
+                .Property(x => x.IDCLIENTE)
+                .ValueGeneratedNever();
+
+            modelBuilder.Entity<DimProductos>()
+             .ToTable("PRODUCTOS", "DIM");
 
             modelBuilder.Entity<DimClientes>()
                 .ToTable("CLIENTES", "DIM");
@@ -64,6 +87,13 @@ namespace OpinionesClientesETL.DATA.Persisitence
 
             modelBuilder.Entity<DimFecha>()
                 .ToTable("FECHA", "DIM");
+
+            modelBuilder.Entity<DimClasificacion>()
+                .ToTable("CLASIFICACION", "DIM");
+
+            modelBuilder.Entity<FactOpiniones>()
+            .ToTable("OPINIONES", "FACT");
+
 
 
         }

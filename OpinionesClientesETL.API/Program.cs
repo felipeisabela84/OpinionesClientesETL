@@ -3,14 +3,14 @@ using OpinionesClientesETL.DATA;
 using OpinionesClientesETL.DATA.Entities.db;
 using OpinionesClientesETL.DATA.Interfaces;
 using OpinionesClientesETL.DATA.Persisitence.Repositories.Csv;
+using OpinionesClientesETL.DATA.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IExtractor<Opinions>>(provider =>
-    new CsvExtractor<Opinions>(@"D:\Sources\surveys_part1.csv"));
+builder.Services.AddScoped<OpinionsService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

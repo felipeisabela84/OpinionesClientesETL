@@ -12,8 +12,8 @@ namespace OpinionesClientesETL.DATA.Entities.Dwh.Facts
         public int IDCLIENTE { get; set; }
         public int IDPRODUCTO { get; set; }
         public int IDFUENTE { get; set; }
-        public int IDCLASIFICACION { get; set; }
-        public int IDRATING { get; set; }
+        public int? IDCLASIFICACION { get; set; }
+        public int? IDRATING { get; set; }
         public int IDFECHA { get; set; }
         public int TOTAL_COMENTARIOS { get; set; }
     }

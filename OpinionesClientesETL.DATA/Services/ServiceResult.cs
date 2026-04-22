@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpinionesClientesETL.DATA.Persisitence
+namespace OpinionesClientesETL.DATA.Services
 {
     public class ServiceResult
     {

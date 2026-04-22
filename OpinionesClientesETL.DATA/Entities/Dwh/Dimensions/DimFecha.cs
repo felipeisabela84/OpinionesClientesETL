@@ -1,9 +1,5 @@
 ﻿using CsvHelper.Configuration.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OpinionesClientesETL.DATA.Entities.Dwh.Dimensions
 {
@@ -11,8 +7,20 @@ namespace OpinionesClientesETL.DATA.Entities.Dwh.Dimensions
     {
         [Ignore]
         public int IDFECHA { get; set; }
+
+        // ✅ CsvHelper lee "Fecha" del CSV
         [Name("Fecha")]
-        public string FECHA { get; set; }
+        public DateTime? FECHA_DT { get; set; }
+
+        // ✅ EF usa esto, CsvHelper lo ignora
+        [Ignore]
+        [NotMapped]
+        public string? FECHA
+        {
+            get => FECHA_DT?.ToString("yyyy-MM-dd");
+            set => FECHA_DT = DateTime.TryParse(value, out var d) ? d : null;
+        }
+
         [Ignore]
         public int MES { get; set; }
         [Ignore]
